@@ -1,15 +1,42 @@
-## Put comments here that give an overall description of what your
-## functions do
+## (TBD)
 
-## Write a short comment describing this function
-
+##
+# makeCacheMatrix function acts as a container that has 
+# 2 member variable - matrices, original and inverse, and methods (functions): 
+# get - returns original matrix member
+# set - sets original matrix member to matrix argument
+# getinverse - returns inverse matrix member
+# setinverse - sets inverse matrix member to matrix argument
 makeCacheMatrix <- function(x = matrix()) {
-
+        ix <- NULL
+        set <- function(m) {
+                x <<- m
+                ix <<- NULL
+        }
+        get <- function() x
+        setinverse <- function(im) ix <<- im
+        getinverse <- function() ix
+        list(set = set, get = get,
+             setinverse = setinverse,
+             getinverse = getinverse)
 }
 
-
-## Write a short comment describing this function
-
+##
+# cacheSolve function takes matrix container created by makeCacheMatrix function
+# and checks if inverse matrix member had been set and if yes then returns its value
+# if inverse matrix member had not been set function
+# - calculates inverse using solve() function
+# - sets inverse matrix member to calculated value
+# - returns inverse matrix
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+        i <- x$getinverse()
+        if(!is.null(i)) {
+                message("getting cached inverse")
+                return(i)
+        }
+        m <- x$get()
+        i <- solve(m)
+        x$setinverse(i)
+        i
 }
+
